@@ -9,9 +9,9 @@ start_date='2022-06-01'   #  YYYY-MM-DD format
 end_date='2023-06-01'
 today=$start_date   ## at first these two are equal
 
-current_book=""
-current_chapter=""
-chaps_per_day=""
+current_book="genesis"
+current_chapter="1"
+chaps_per_day=4
 
 declare -a books=( genesis exodus leviticus numbers deuteronomy joshua judges
 ruth i_samuel ii_samuel i_kings ii_kings i_chronicles ii_chronicles ezra 
@@ -75,15 +75,13 @@ generate_dates(){
         echo
         #echo $(date -d $today +"%A %m-%d-%Y") " => $name  Chapter $c"
 
-
-
-        echo $(date -d $today +"%A %m-%d-%Y") " => "
+        echo $(date -d $today +"%A %m-%d-%Y") " ====> "
         
         ## n is number of chapters to read each day
         n=0
         while [[ $n -le $chaps_per_day ]] ; do
 
-            print_books_chaps $book $chapter 
+            print_books_chaps "$current_book" "$current_chapter" 
 
 
         done
@@ -107,8 +105,10 @@ generate_dates(){
 
 ####  abstract out the printing of bible books and chapters
 print_books_chaps(){
+    echo "print_books_chaps -- book: $1 chapter: $2"
     book=$1; chapter=$2
-    if $( not_last_book "$book" "$chapter" ); then
+
+    if $( not_last_book "$book" $current_chapter ); then
         echo "$book $chapter"
     else
         new_book=$(advance_book "$book")
@@ -145,10 +145,13 @@ index_of(){
 not_last_book(){
 
     book=$1; chapter=$2
+    echo "not_last_book - Book is: $book  Chapter is: $chapter"
 
-    if [[ $chapter -le ${chapters[$book]} ]] ; then 
+    if [[ $current_chapter -le ${chapters[$book]} ]] ; then 
+        current_chapter=$((current_chappter+1))
         return 0
     else
+        current_chapter=1
         return 1
     fi
 }
@@ -185,8 +188,9 @@ get_chaps_per_day(){
 
 
 
+#############################################3
+####                 MAIN
+#############################################3
 
-####  MAIN
-
-#generate_dates
-advance_book "i_maccabees"
+get_chaps_per_day
+generate_dates
