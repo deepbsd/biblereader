@@ -4,8 +4,14 @@ external_file="~/bibleplan_in_a_year.txt"
 
 version="New American Bible Revised Edition (Catholic Edition)"
 
+##  Find a way to change this programmatically
+start_date='2022-06-01'   #  YYYY-MM-DD format
+end_date='2023-06-01'
+today=$start_date   ## at first these two are equal
+
 current_book=""
 current_chapter=""
+chaps_per_day=""
 
 declare -a books=( genesis exodus leviticus numbers deuteronomy joshua judges
 ruth i_samuel ii_samuel i_kings ii_kings i_chronicles ii_chronicles ezra 
@@ -34,11 +40,6 @@ declare -A chapters=( [genesis]=50 [exodus]=40 [leviticus]=27 [numbers]=36 [deut
 [jude]=1 [revelation]=22
 )
 
-##  Find a way to change this programmatically
-start_date='2022-06-01'   #  YYYY-MM-DD format
-end_date='2023-06-01'
-today=$start_date   ## at first these two are equal
-
 ## Everything depends on picking a start date
 start=$(date -d $start_date +"%Y%m%d")
 end=$( date -d $end_date +"%Y%m%d")
@@ -52,33 +53,52 @@ end=$( date -d $end_date +"%Y%m%d")
 
 ## Everything happens within the dates for loop
 generate_dates(){
+
     while [[ $today -le $end ]];
     do
     
         ## Start through the books of the bible
 
         ##  !!!   Need to change to iterate through indexes as needed
-        for name in ${books[@]}; do
+        #for name in ${books[@]}; do
     
     
-            #  ::: Bookname ==> Total Chapters
-            echo
-            echo "::: $name ==> ${chapters[$name]}"
+        #  ::: Bookname ==> Total Chapters
+        echo
+        echo "::: $name ==> ${chapters[$name]}"
     
-            ## For each book iterate through the chapters
-            for (( c=1; c<=${chapters[$name]}; c++ ))
-            do
-                echo
-                echo $(date -d $today +"%A %m-%d-%Y") " => $name  Chapter $c"
-    
-                ###  call print book and chapter function in here
-    
-                # update the date
-                today=$(date -d"$today + 1 day" +"%Y%m%d"  )
-    
-            done
-    
+        ## For each book iterate through the chapters
+        #for (( c=1; c<=${chapters[$name]}; c++ ))
+        #do
+
+
+        echo
+        #echo $(date -d $today +"%A %m-%d-%Y") " => $name  Chapter $c"
+
+
+
+        echo $(date -d $today +"%A %m-%d-%Y") " => "
+        
+        ## n is number of chapters to read each day
+        n=0
+        while [[ $n -le $chaps_per_day ]] ; do
+
+            print_books_chaps $book $chapter 
+
+
         done
+
+       
+
+    
+        ###  call print book and chapter function in here
+    
+        # update the date
+        today=$(date -d"$today + 1 day" +"%Y%m%d"  )
+    
+        #done
+    
+        #done
         #echo $(date -d $today +"%A %m-%d-%Y")
         #today=$(date -d"$today + 1 day" +"%Y%m%d"  )
     done 
@@ -94,7 +114,9 @@ print_books_chaps(){
         new_book=$(advance_book "$book")
 
         ## not sure if I want to go recursive here.  Does this create a problem for future?
-        print_books_chaps "$new_book" 1
+        current_book=$new_book
+        current_chapter=1
+        print_books_chaps "$new_book" $current_chapter
     fi
 
 }
@@ -131,6 +153,9 @@ not_last_book(){
     fi
 }
 
+get_chaps_per_day(){
+    echo "How many chapters per day?"; read chaps_per_day
+}
 
 
 
