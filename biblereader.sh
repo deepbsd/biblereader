@@ -56,6 +56,8 @@ generate_dates(){
     do
     
         ## Start through the books of the bible
+
+        ##  !!!   Need to change to iterate through indexes as needed
         for name in ${books[@]}; do
     
     
@@ -69,6 +71,7 @@ generate_dates(){
                 echo
                 echo $(date -d $today +"%A %m-%d-%Y") " => $name  Chapter $c"
     
+                ###  call print book and chapter function in here
     
                 # update the date
                 today=$(date -d"$today + 1 day" +"%Y%m%d"  )
@@ -81,6 +84,27 @@ generate_dates(){
     done 
 
 }
+
+####  abstract out the printing of bible books and chapters
+print_books_chaps(){
+    book=$1; chapter=$2
+    if $( not_last_book "$book" "$chapter" ); then
+        echo "$book $chapter"
+    else
+        new_book=$(advance_book "$book")
+
+        ## not sure if I want to go recursive here.  Does this create a problem for future?
+        print_books_chaps "$new_book" 1
+    fi
+
+}
+
+
+####  when we run out of chapters in one book, advance to the next book of the bible
+advance_book(){
+    echo
+}
+
 
 ###  Figure out if we're at the last chapter in the book yet
 not_last_book(){
@@ -126,4 +150,5 @@ not_last_book(){
 
 ####  MAIN
 
-generate_dates
+#generate_dates
+echo ${books[2]}
