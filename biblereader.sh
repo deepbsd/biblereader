@@ -54,7 +54,6 @@ end=$( date -d $end_date +"%Y%m%d")
 generate_dates(){
     while [[ $today -le $end ]];
     do
-        
     
         ## Start through the books of the bible
         for name in ${books[@]}; do
@@ -76,12 +75,7 @@ generate_dates(){
     
             done
     
-    
         done
-    
-    
-    
-    
         #echo $(date -d $today +"%A %m-%d-%Y")
         #today=$(date -d"$today + 1 day" +"%Y%m%d"  )
     done 
@@ -132,6 +126,4 @@ not_last_book(){
 
 ####  MAIN
 
-not_last_book "i_maccabees"  17
-
-echo "status is: " "$?"
+generate_dates
