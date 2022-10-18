@@ -99,11 +99,24 @@ print_books_chaps(){
 
 }
 
-
 ####  when we run out of chapters in one book, advance to the next book of the bible
 advance_book(){
-    echo
+    book=$1
+    new_book_index=$(( $(index_of "$book") + 1 ))
+    echo "${books[ $new_book_index ]}"
 }
+
+### Need to be able to get index value of book in books array
+index_of(){
+    ##  This will return the index value of the book in the books array
+    book=$1
+    for i in "${!books[@]}"; do
+        if [[ "${books[$i]}" = "$book" ]] ; then
+            echo "${i}" 
+        fi
+    done
+}
+
 
 
 ###  Figure out if we're at the last chapter in the book yet
@@ -151,4 +164,4 @@ not_last_book(){
 ####  MAIN
 
 #generate_dates
-echo ${books[2]}
+advance_book "i_maccabees"
