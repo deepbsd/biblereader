@@ -10,7 +10,7 @@ end_date='2023-06-01'
 today=$start_date   ## at first these two are equal
 
 current_book="genesis"
-current_chapter="1"
+current_chapter=1
 chaps_per_day=4
 
 declare -a books=( genesis exodus leviticus numbers deuteronomy joshua judges
@@ -105,12 +105,14 @@ generate_dates(){
 
 ####  abstract out the printing of bible books and chapters
 print_books_chaps(){
-    echo "print_books_chaps -- book: $1 chapter: $2"
     book=$1; chapter=$2
+    echo "print_books_chaps -- book: $book chapter: $chapter"
 
-    if $( not_last_book "$book" $current_chapter ); then
+    #if $( not_last_book "$current_book" "$current_chapter" ); then
+    if $( not_last_book "$book" "$chapter" ); then
         echo "$book $chapter"
     else
+        # increment book
         new_book=$(advance_book "$book")
 
         ## not sure if I want to go recursive here.  Does this create a problem for future?
@@ -145,10 +147,11 @@ index_of(){
 not_last_book(){
 
     book=$1; chapter=$2
-    echo "not_last_book - Book is: $book  Chapter is: $chapter"
+    echo "not_last_book --- Book is: $1  Chapter is: $chapter"
 
-    if [[ $current_chapter -le ${chapters[$book]} ]] ; then 
-        current_chapter=$((current_chappter+1))
+    if (( $chapter <= "${chapters[$book]}" )) ; then 
+        # increment chapter
+        current_chapter=$((current_chapter+1))
         return 0
     else
         current_chapter=1
