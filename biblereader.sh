@@ -65,7 +65,7 @@ generate_dates(){
     
         #  ::: Bookname ==> Total Chapters
         echo
-        echo "::: $name ==> ${chapters[$name]}"
+        echo "::: $current_book ==> ${chapters[$current_book]} chapters in book"
     
         ## For each book iterate through the chapters
         #for (( c=1; c<=${chapters[$name]}; c++ ))
@@ -79,9 +79,13 @@ generate_dates(){
         
         ## n is number of chapters to read each day
         n=0
+        eval chaps_per_day=$chaps_per_day
         while [[ $n -le $chaps_per_day ]] ; do
 
-            print_books_chaps "$current_book" "$current_chapter" 
+            # This should update from global variable after each global update
+            book="$current_book"; chapter="$current_chapter"
+            print_books_chaps "$book" "$chapter" 
+            n=$((n+1))
 
 
         done
@@ -94,11 +98,12 @@ generate_dates(){
         # update the date
         today=$(date -d"$today + 1 day" +"%Y%m%d"  )
     
-        #done
     
         #done
-        #echo $(date -d $today +"%A %m-%d-%Y")
-        #today=$(date -d"$today + 1 day" +"%Y%m%d"  )
+        echo $(date -d $today +"%A %m-%d-%Y")
+        today=$(date -d"$today + 1 day" +"%Y%m%d"  )
+
+
     done 
 
 }
@@ -111,14 +116,15 @@ print_books_chaps(){
     #if $( not_last_book "$current_book" "$current_chapter" ); then
     if $( not_last_book "$book" "$chapter" ); then
         echo "$book $chapter"
+        advance_chapter
     else
         # increment book
         new_book=$(advance_book "$book")
 
         ## not sure if I want to go recursive here.  Does this create a problem for future?
-        current_book=$new_book
-        current_chapter=1
-        print_books_chaps "$new_book" $current_chapter
+        current_book="$new_book"   # update global variable
+        current_chapter=1        # update global variable
+        echo "print_books_chaps else stmt: "; print_books_chaps "$new_book" $current_chapter
     fi
 
 }
@@ -127,8 +133,16 @@ print_books_chaps(){
 advance_book(){
     book=$1
     new_book_index=$(( $(index_of "$book") + 1 ))
-    echo "${books[ $new_book_index ]}"
+    #current_book="${books[ $new_book_index ]}"
+    echo "advance_book:  ${books[ $new_book_index ]}"
 }
+
+## advance the chapter
+advance_chapter(){
+    next_chapter=$((current_chapter+1))
+    export current_chapter=$next_chapter
+}
+
 
 ### Need to be able to get index value of book in books array
 index_of(){
@@ -149,7 +163,7 @@ not_last_book(){
     book=$1; chapter=$2
     #echo "not_last_book --- Book is: $book  Chapter is: $chapter"
 
-    if (( $chapter <= "${chapters[$book]}" )) ; then 
+    if (( $chapter <= ${chapters[$book]} )); then 
         # increment chapter
         current_chapter=$((current_chapter+1))
         return 0
@@ -161,6 +175,7 @@ not_last_book(){
 
 get_chaps_per_day(){
     echo "How many chapters per day?"; read chaps_per_day
+    #export $chaps_per_day
 }
 
 
