@@ -147,7 +147,7 @@ index_of(){
 not_last_book(){
 
     book=$1; chapter=$2
-    echo "not_last_book --- Book is: $1  Chapter is: $chapter"
+    #echo "not_last_book --- Book is: $book  Chapter is: $chapter"
 
     if (( $chapter <= "${chapters[$book]}" )) ; then 
         # increment chapter
