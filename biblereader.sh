@@ -14,8 +14,8 @@ today=$start_date   ## at first these two are equal
 
 
 ###  Update these each time you run the program as desired
-current_book="i_maccabees"   # start from genesis or where you are at
-current_chapter=8            # start from genesis 1 or where you are at
+current_book="genesis"   # start from genesis or where you are at
+current_chapter=1            # start from genesis 1 or where you are at
 chaps_per_day=4   # overridden by user input.  Just start with something
 
 declare -a books=( genesis exodus leviticus numbers deuteronomy joshua judges
