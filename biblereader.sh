@@ -59,56 +59,28 @@ generate_dates(){
     while [[ $today -le $end ]];
     do
     
-        ## Start through the books of the bible
-
-        ##  !!!   Need to change to iterate through indexes as needed
-        #for name in ${books[@]}; do
-    
-    
-        #  ::: Bookname ==> Total Chapters
-        echo
-        if [[ -n ${chapters[$current_book]} ]]; then
-            echo "::: $current_book ==> ${chapters[$current_book]} chapters in book"
-        fi
-    
-        ## For each book iterate through the chapters
-        #for (( c=1; c<=${chapters[$name]}; c++ ))
-        #do
-
         # stop if we've reached the last book
-        if [[ $current_book = "revelation" ]] && [[ $current_chapter = 22 ]]; then
-
-            exit 0  # we have reached the last book!!
-        fi
+        [[ -n ${chapters[$current_book]} ]] || exit_app
+    
 
         echo
-        #echo $(date -d $today +"%A %m-%d-%Y") " => $name  Chapter $c"
 
         echo $(date -d $today +"%A %m-%d-%Y") " ====> "
         
         ## n is number of chapters to read each day
         eval chaps_per_day=$chaps_per_day
-        #while [[ $n -le $chaps_per_day ]] ; do
+
         for ((n=1; n<=$chaps_per_day; n++)); do
 
             # This should update from global variable after each global update
             book="$current_book"; chapter="$current_chapter"
             print_books_chaps "$book" "$chapter" 
 
-
         done
 
-       
-
-    
-        ###  call print book and chapter function in here
-    
-    
-        #done
         # echo $(date -d $today +"%A %m-%d-%Y")  # only need this for debugging...
         # update the date
         today=$(date -d"$today + 1 day" +"%Y%m%d"  )
-
 
     done 
 
