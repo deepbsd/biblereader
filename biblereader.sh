@@ -178,31 +178,6 @@ exit_app(){
 
 
 
-#####  Not sure what to do with this right now...
-#for name in ${chapters[@]}}; do
-#    #echo "$name ==> ${chapters[$name]}"
-#    ((total+=${chapters[$name]}))
-#done
-
-
-
-######  Also not sure what to do with this currently....
-#current_chapter=1
-#for name in ${books[@]}; do
-#    echo "::: $name ==> ${chapters[$name]}"
-#    
-#    todays_reading="$name Chapters $current_chapter - $((current_chapter+3))"
-#    ((current_chapter+=4))
-#
-#    for (( c=1; c<=${chapters[$name]}; c++ ))
-#    do
-#        echo "$name  Chapter $c"
-#    done
-#    current_chapter=1
-#done
-
-
-
 #############################################3
 ####                 MAIN
 #############################################3
