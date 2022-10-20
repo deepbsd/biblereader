@@ -6,5 +6,15 @@ something to help me get the work done and know where I am and whether I'm on sc
 
 # Status:
 
-Now the problem is that it stops in one year's time whether the reading is done or not.  Need to add
-flexibility here...
+The program asks whether you want to delete the old file if it exists.  Otherwise the program appends
+another printout to the end of the file.
+
+It asks if you want to start from today or whether you want to start from another date.
+
+It then asks what book of the bible you want to start from, and then what chapter.  Otherwise it will
+start from genesis 1.
+
+All input is lowercase or numeric.  
+
+I should output the book names as they are indicated in the internal hash for easier spelling.  Some of
+the bible books have weird spelling that is easy to get wrong and thereby screw up the program.
