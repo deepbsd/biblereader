@@ -166,7 +166,28 @@ get_chaps_per_day(){
 
 delete_old_file(){
     echo "Delete old Bible in a year file?"; read yes_no
-    [[ "$yes_no" =~ [yY] ]]  &&  [[ -f "$external_file" ]] && rm "$external_file"
+    [[ "$yes_no" =~ [yY] ]]  &&  rm "$external_file"
+}
+
+start_when(){
+    echo "Start today or when? (today/yyyy-mm-dd)" 
+    read startday
+    if [[ "$startday" =~ 'today' ]] ; then
+        start_date=$(date +"%Y%m%d")
+    else
+        start_date="$startday"
+    fi
+    export start=$(date -d $start_date +"%Y%m%d")
+}
+
+start_book(){
+    echo "Starting book of Bible?"; read start_book
+    export current_book=$start_book || current_book='genesis'
+}
+
+start_chap(){
+    echo "Starting chapter?"; read start_chap
+    export current_chapter=$start_chap || current_chapter=1
 }
 
 create_external_file(){
@@ -177,8 +198,13 @@ create_external_file(){
     fi
 }
 
+view_file(){
+    [[ -f "$external_file" ]] && less "$external_file"
+}
+
 exit_app(){
     echo "Last chapter in Bible!" >>$external_file
+    view_file
     exit 0
 }
 
@@ -189,5 +215,10 @@ exit_app(){
 #############################################3
 
 create_external_file
+start_when
+start_book
+start_chap
 get_chaps_per_day
 generate_dates
+
+
