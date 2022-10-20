@@ -155,6 +155,7 @@ index_of(){
 
 
 ###  Figure out if we're at the last chapter in the book yet
+###    This function behaves truthy of falsy depending on whether it's on last book
 not_last_book(){
 
     book=$1; chapter=$2
@@ -163,16 +164,15 @@ not_last_book(){
     if  [[ $chapter -lt ${chapters[$book]}  ]] ; then 
         # increment chapter
         current_chapter=$((current_chapter+1))
-        return 0
+        return 0   # true if not last book
     else
         current_chapter=1
-        return 1
+        return 1   # false if last book
     fi
 }
 
 get_chaps_per_day(){
     echo "How many chapters per day?"; read chaps_per_day
-    #export $chaps_per_day
 }
 
 
