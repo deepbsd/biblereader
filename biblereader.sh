@@ -73,6 +73,11 @@ generate_dates(){
         #for (( c=1; c<=${chapters[$name]}; c++ ))
         #do
 
+        # stop if we've reached the last book
+        if [[ $current_book = "revelation" ]] && [[ $current_chapter = 22 ]]; then
+
+            exit 0  # we have reached the last book!!
+        fi
 
         echo
         #echo $(date -d $today +"%A %m-%d-%Y") " => $name  Chapter $c"
@@ -162,10 +167,18 @@ not_last_book(){
     book=$1; chapter=$2
     #echo "not_last_book --- Book is: $book  Chapter is: $chapter"
 
-    if  [[ $chapter -lt ${chapters[$book]}  ]] ; then 
+
+    if  [[ $chapter -le $(( ${chapters[$book]}+1 ))  ]] ; then 
         # increment chapter
         current_chapter=$((current_chapter+1))
         return 0   # true if not last book
+    
+        # exit if we run out of books in bible
+        if [[ ! ${chapters[$book]} ]] ; then
+            echo "Last book in Bible!"
+            exit 0
+        fi
+
     else
         current_chapter=1
         return 1   # false if last book
