@@ -121,7 +121,6 @@ print_books_chaps(){
         ## not sure if I want to go recursive here.  Does this create a problem for future?
         export current_book="$new_book"   # update global variable
         export current_chapter=1        # update global variable
-        echo "print_books_chaps else stmt: "; #print_books_chaps "$new_book" $current_chapter
     fi
 
 }
