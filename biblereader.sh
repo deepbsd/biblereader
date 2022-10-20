@@ -181,6 +181,7 @@ start_when(){
 }
 
 start_book(){
+    show_books
     echo "Starting book of Bible?"; read start_book
     export current_book=$start_book || current_book='genesis'
 }
@@ -188,6 +189,13 @@ start_book(){
 start_chap(){
     echo "Starting chapter?"; read start_chap
     export current_chapter=$start_chap || current_chapter=1
+}
+
+show_books(){
+    echo "Display books of $version for spelling purposes?"; read yes_no
+    [[ "$yes_no" =~ [yY] ]] && for name in "${books[@]}"; do
+        echo -n " $name "
+    done
 }
 
 create_external_file(){
