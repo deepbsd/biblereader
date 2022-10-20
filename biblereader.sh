@@ -67,7 +67,9 @@ generate_dates(){
     
         #  ::: Bookname ==> Total Chapters
         echo
-        echo "::: $current_book ==> ${chapters[$current_book]} chapters in book"
+        if [[ -n ${chapters[$current_book]} ]]; then
+            echo "::: $current_book ==> ${chapters[$current_book]} chapters in book"
+        fi
     
         ## For each book iterate through the chapters
         #for (( c=1; c<=${chapters[$name]}; c++ ))
@@ -117,11 +119,8 @@ print_books_chaps(){
     book=$1; chapter=$2
     echo "print_books_chaps -- book: $book chapter: $chapter"
 
-    if  [[ ! ${chapters[$book]} ]]  ; then
-
-        echo "Last chapter in Bible!"
-        exit 0
-    fi
+    # if ${chapters[$book]} is undefined, we have finished the Bible
+    [ "${chapters[$book]}" -eq "${chapters[$book]}" 2>/dev/null ] || exit_app
 
     if $( not_last_book "$book" "$chapter" ); then
         # next chapter
@@ -129,6 +128,9 @@ print_books_chaps(){
     else
         # increment book
         new_book=$(advance_book "$book")
+
+        # if advance_book runs out of books, it means we've finished the Bible
+        if [ -z $new_book ] ; then exit_app; fi
 
         ## not sure if I want to go recursive here.  Does this create a problem for future?
         export current_book="$new_book"   # update global variable
@@ -194,6 +196,10 @@ get_chaps_per_day(){
     echo "How many chapters per day?"; read chaps_per_day
 }
 
+exit_app(){
+    echo "Last chapter in Bible!"
+    exit 0
+}
 
 
 
