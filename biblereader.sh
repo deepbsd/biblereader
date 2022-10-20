@@ -199,6 +199,8 @@ show_books(){
 }
 
 create_external_file(){
+    echo "Delete old Bible plan file?"; read yes_no
+    [[ "$yes_no" =~ [nN] ]] && exit_app
     if [[ -f "$external_file" ]]; then
         delete_old_file
     else
@@ -211,7 +213,6 @@ view_file(){
 }
 
 exit_app(){
-    echo "Last chapter in Bible!" >>$external_file
     view_file
     exit 0
 }
