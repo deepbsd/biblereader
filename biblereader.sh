@@ -85,7 +85,6 @@ generate_dates(){
             # This should update from global variable after each global update
             book="$current_book"; chapter="$current_chapter"
             print_books_chaps "$book" "$chapter" 
-            n=$((n+1))
 
 
         done
@@ -134,7 +133,7 @@ advance_book(){
     book=$1
     new_book_index=$(( $(index_of "$book") + 1 ))
     #current_book="${books[ $new_book_index ]}"
-    echo "advance_book:  ${books[ $new_book_index ]}"
+    echo "${books[ $new_book_index ]}"
 }
 
 ## advance the chapter
@@ -163,7 +162,7 @@ not_last_book(){
     book=$1; chapter=$2
     #echo "not_last_book --- Book is: $book  Chapter is: $chapter"
 
-    if  [[ $chapter -le ${chapters[$book]}  ]] ; then 
+    if  [[ $chapter -lt ${chapters[$book]}  ]] ; then 
         # increment chapter
         current_chapter=$((current_chapter+1))
         return 0
