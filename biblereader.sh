@@ -96,7 +96,7 @@ generate_dates(){
         ###  call print book and chapter function in here
     
         # update the date
-        today=$(date -d"$today + 1 day" +"%Y%m%d"  )
+        #today=$(date -d"$today + 1 day" +"%Y%m%d"  )
     
     
         #done
@@ -115,7 +115,7 @@ print_books_chaps(){
 
     #if $( not_last_book "$current_book" "$current_chapter" ); then
     if $( not_last_book "$book" "$chapter" ); then
-        echo "$book $chapter"
+        echo "### $book $chapter"
         advance_chapter
     else
         # increment book
@@ -163,7 +163,7 @@ not_last_book(){
     book=$1; chapter=$2
     #echo "not_last_book --- Book is: $book  Chapter is: $chapter"
 
-    if (( $chapter <= ${chapters[$book]} )); then 
+    if  [[ $chapter -le ${chapters[$book]}  ]] ; then 
         # increment chapter
         current_chapter=$((current_chapter+1))
         return 0
