@@ -193,7 +193,7 @@ start_chap(){
 
 show_books(){
     echo "Display books of $version for spelling purposes?"; read yes_no
-    [[ "$yes_no" =~ [yY] ]] && for name in "${books[@]}"; do
+    [[ "$yes_no" =~ [yY] ]] && echo && echo && for name in "${books[@]}"; do
         echo -n " $name "
     done
 }
