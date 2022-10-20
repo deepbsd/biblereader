@@ -94,12 +94,10 @@ generate_dates(){
     
         ###  call print book and chapter function in here
     
-        # update the date
-        #today=$(date -d"$today + 1 day" +"%Y%m%d"  )
-    
     
         #done
         echo $(date -d $today +"%A %m-%d-%Y")
+        # update the date
         today=$(date -d"$today + 1 day" +"%Y%m%d"  )
 
 
