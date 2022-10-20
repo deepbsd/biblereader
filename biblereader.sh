@@ -2,18 +2,21 @@
 
 ##   Working from New American Bible (Catholic Edition)
 
+# at some point I'll output to a file I guess...  Not using this now
 external_file="~/bibleplan_in_a_year.txt"
 
 version="New American Bible Revised Edition (Catholic Edition)"
 
 ##  Find a way to change this programmatically
-start_date='2022-06-01'   #  YYYY-MM-DD format
-end_date='2023-06-01'
+start_date='2022-10-20'   #  YYYY-MM-DD format
+end_date='2023-08-01'
 today=$start_date   ## at first these two are equal
 
-current_book="genesis"
-current_chapter=1
-chaps_per_day=4
+
+###  Update these each time you run the program as desired
+current_book="i_maccabees"   # start from genesis or where you are at
+current_chapter=8            # start from genesis 1 or where you are at
+chaps_per_day=4   # overridden by user input.  Just start with something
 
 declare -a books=( genesis exodus leviticus numbers deuteronomy joshua judges
 ruth i_samuel ii_samuel i_kings ii_kings i_chronicles ii_chronicles ezra 
@@ -89,7 +92,7 @@ generate_dates(){
 ####  abstract out the printing of bible books and chapters
 print_books_chaps(){
     book=$1; chapter=$2
-    echo "print_books_chaps -- book: $book chapter: $chapter"
+    echo "Today read: $book chapter: $chapter"
 
     # if ${chapters[$book]} is undefined, we have finished the Bible
     [ "${chapters[$book]}" -eq "${chapters[$book]}" 2>/dev/null ] || exit_app
