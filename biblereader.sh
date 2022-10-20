@@ -78,9 +78,9 @@ generate_dates(){
         echo $(date -d $today +"%A %m-%d-%Y") " ====> "
         
         ## n is number of chapters to read each day
-        n=0
         eval chaps_per_day=$chaps_per_day
-        while [[ $n -le $chaps_per_day ]] ; do
+        #while [[ $n -le $chaps_per_day ]] ; do
+        for ((n=1; n<=$chaps_per_day; n++)); do
 
             # This should update from global variable after each global update
             book="$current_book"; chapter="$current_chapter"
