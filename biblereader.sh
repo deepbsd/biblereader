@@ -177,6 +177,8 @@ start_when(){
 
 start_book(){
     show_books
+    echo
+    echo
     echo "Starting book of Bible?"; read start_book
     export current_book=$start_book || current_book='genesis'
 }
@@ -188,13 +190,16 @@ start_chap(){
 
 show_books(){
     echo "Display books of $version for spelling purposes?"; read yes_no
-    [[ "$yes_no" =~ [yY] ]] && echo && echo && for name in "${books[@]}"; do
+    echo
+    echo
+    [[ "$yes_no" =~ [yY] ]] && for name in "${books[@]}"; do
         echo -n " $name "
     done
 }
 
 create_external_file(){
     echo "Delete old Bible plan file?"; read yes_no
+
     ## just reuse old file if the old plan is good enough
     [[ "$yes_no" =~ [nN] ]] && exit_app
     if [[ -f "$external_file" ]]; then
