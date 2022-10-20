@@ -3,12 +3,12 @@
 ##   Working from New American Bible (Catholic Edition)
 
 # at some point I'll output to a file I guess...  Not using this now
-external_file="~/bibleplan_in_a_year.txt"
+external_file="$HOME/bibleplan_in_a_year.txt"
 
 version="New American Bible Revised Edition (Catholic Edition)"
 
 ##  Find a way to change this programmatically
-start_date='2022-10-20'   #  YYYY-MM-DD format
+start_date='2022-06-01'   #  YYYY-MM-DD format
 end_date='2023-08-01'
 today=$start_date   ## at first these two are equal
 
@@ -66,9 +66,9 @@ generate_dates(){
         [[ -n ${chapters[$current_book]} ]] || exit_app
     
 
-        echo
+        echo >>$external_file
 
-        echo $(date -d $today +"%A %m-%d-%Y") " ====> "
+        echo $(date -d $today +"%A %m-%d-%Y") " ====> " >>$external_file
         
         ## n is number of chapters to read each day
         eval chaps_per_day=$chaps_per_day
@@ -77,7 +77,7 @@ generate_dates(){
 
             # This should update from global variable after each global update
             book="$current_book"; chapter="$current_chapter"
-            print_books_chaps "$book" "$chapter" 
+            print_books_chaps "$book" "$chapter"  
 
         done
 
@@ -92,7 +92,7 @@ generate_dates(){
 ####  abstract out the printing of bible books and chapters
 print_books_chaps(){
     book=$1; chapter=$2
-    echo "Today read: $book chapter: $chapter"
+    echo "Today read: $book chapter: $chapter"  >>$external_file
 
     # if ${chapters[$book]} is undefined, we have finished the Bible
     [ "${chapters[$book]}" -eq "${chapters[$book]}" 2>/dev/null ] || exit_app
@@ -147,7 +147,6 @@ index_of(){
 not_last_book(){
 
     book=$1; chapter=$2
-    #echo "not_last_book --- Book is: $book  Chapter is: $chapter"
 
 
     if  [[ $chapter -le $(( ${chapters[$book]}-1 ))  ]] ; then 
@@ -165,8 +164,21 @@ get_chaps_per_day(){
     echo "How many chapters per day?"; read chaps_per_day
 }
 
+delete_old_file(){
+    echo "Delete old Bible in a year file?"; read yes_no
+    [[ "$yes_no" =~ [yY] ]]  &&  [[ -f "$external_file" ]] && rm "$external_file"
+}
+
+create_external_file(){
+    if [[ -f "$external_file" ]]; then
+        delete_old_file
+    else
+        touch "$external_file"
+    fi
+}
+
 exit_app(){
-    echo "Last chapter in Bible!"
+    echo "Last chapter in Bible!" >>$external_file
     exit 0
 }
 
@@ -176,5 +188,6 @@ exit_app(){
 ####                 MAIN
 #############################################3
 
+create_external_file
 get_chaps_per_day
 generate_dates
