@@ -117,9 +117,14 @@ print_books_chaps(){
     book=$1; chapter=$2
     echo "print_books_chaps -- book: $book chapter: $chapter"
 
-    #if $( not_last_book "$current_book" "$current_chapter" ); then
+    if  [[ ! ${chapters[$book]} ]]  ; then
+
+        echo "Last chapter in Bible!"
+        exit 0
+    fi
+
     if $( not_last_book "$book" "$chapter" ); then
-        # echo "### $book $chapter"
+        # next chapter
         advance_chapter
     else
         # increment book
@@ -168,13 +173,13 @@ not_last_book(){
     #echo "not_last_book --- Book is: $book  Chapter is: $chapter"
 
 
-    if  [[ $chapter -le $(( ${chapters[$book]}+1 ))  ]] ; then 
+    if  [[ $chapter -le $(( ${chapters[$book]}-1 ))  ]] ; then 
         # increment chapter
         current_chapter=$((current_chapter+1))
         return 0   # true if not last book
     
         # exit if we run out of books in bible
-        if [[ ! ${chapters[$book]} ]] ; then
+        if [[ ${book} = "revelation" ]] && [[ ${chapter} > 22 ]] ; then
             echo "Last book in Bible!"
             exit 0
         fi
