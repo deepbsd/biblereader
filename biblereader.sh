@@ -130,7 +130,7 @@ print_books_chaps(){
 advance_book(){
     book=$1
     new_book_index=$(( $(index_of "$book") + 1 ))
-    #current_book="${books[ $new_book_index ]}"
+    
     echo "${books[ $new_book_index ]}"
 }
 
