@@ -155,12 +155,6 @@ not_last_book(){
         current_chapter=$((current_chapter+1))
         return 0   # true if not last book
     
-        # exit if we run out of books in bible
-        if [[ ${book} = "revelation" ]] && [[ ${chapter} > 22 ]] ; then
-            echo "Last book in Bible!"
-            exit 0
-        fi
-
     else
         current_chapter=1
         return 1   # false if last book
