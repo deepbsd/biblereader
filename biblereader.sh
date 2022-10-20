@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ##   Working from New American Bible (Catholic Edition)
 
 external_file="~/bibleplan_in_a_year.txt"
@@ -96,7 +98,7 @@ generate_dates(){
     
     
         #done
-        echo $(date -d $today +"%A %m-%d-%Y")
+        # echo $(date -d $today +"%A %m-%d-%Y")  # only need this for debugging...
         # update the date
         today=$(date -d"$today + 1 day" +"%Y%m%d"  )
 
@@ -112,7 +114,7 @@ print_books_chaps(){
 
     #if $( not_last_book "$current_book" "$current_chapter" ); then
     if $( not_last_book "$book" "$chapter" ); then
-        echo "### $book $chapter"
+        # echo "### $book $chapter"
         advance_chapter
     else
         # increment book
