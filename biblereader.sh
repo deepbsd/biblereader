@@ -50,10 +50,6 @@ start=$(date -d $start_date +"%Y%m%d")
 end=$( date -d $end_date +"%Y%m%d")
 
 
-##  Bible Version
-#echo $version
-
-
 ####  FUNCTIONS
 
 ## Everything happens within the dates for loop
@@ -165,8 +161,7 @@ get_chaps_per_day(){
 }
 
 delete_old_file(){
-    echo "Delete old Bible in a year file?"; read yes_no
-    [[ "$yes_no" =~ [yY] ]]  &&  rm "$external_file"
+    rm "$external_file"
 }
 
 start_when(){
@@ -200,6 +195,7 @@ show_books(){
 
 create_external_file(){
     echo "Delete old Bible plan file?"; read yes_no
+    ## just reuse old file if the old plan is good enough
     [[ "$yes_no" =~ [nN] ]] && exit_app
     if [[ -f "$external_file" ]]; then
         delete_old_file
