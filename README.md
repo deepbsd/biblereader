@@ -18,3 +18,6 @@ All input is lowercase or numeric.
 
 I should output the book names as they are indicated in the internal hash for easier spelling.  Some of
 the bible books have weird spelling that is easy to get wrong and thereby screw up the program.
+
+REMINDER: There's a problem with the start date:  it always winds up being June 2022.  Have to find and fix that
+problem.
