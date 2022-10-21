@@ -172,7 +172,8 @@ start_when(){
     else
         start_date="$startday"
     fi
-    export start=$(date -d $start_date +"%Y%m%d")
+    #export start=$(date -d $start_date +"%Y%m%d")
+    export today=$(date -d $start_date +"%Y%m%d")
 }
 
 start_book(){
