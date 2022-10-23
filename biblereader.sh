@@ -2,22 +2,28 @@
 
 ##   Working from New American Bible (Catholic Edition)
 
-# at some point I'll output to a file I guess...  Not using this now
+# We work with an external file in the user's filesystem
 external_file="$HOME/bibleplan_in_a_year.txt"
 
+# gotta pick a version of the Bible
 version="New American Bible Revised Edition (Catholic Edition)"
 
-##  Find a way to change this programmatically
+##  Default day when I started reading the Bible for myself most recently...
 start_date='2022-06-01'   #  YYYY-MM-DD format
 end_date='2023-08-01'
 today=$start_date   ## at first these two are equal
 
+## Everything depends on picking a start date
+start=$(date -d $start_date +"%Y%m%d")
+end=$( date -d $end_date +"%Y%m%d")
 
 ###  Update these each time you run the program as desired
+###  These get updated by functions at program start
 current_book="genesis"   # start from genesis or where you are at
-current_chapter=1            # start from genesis 1 or where you are at
-chaps_per_day=4   # overridden by user input.  Just start with something
+current_chapter=1        # start from genesis 1 or where you are at
+chaps_per_day=4          # overridden by user input.  Just start with something
 
+###  Just two data structures, one array and one hash
 declare -a books=( genesis exodus leviticus numbers deuteronomy joshua judges
 ruth i_samuel ii_samuel i_kings ii_kings i_chronicles ii_chronicles ezra 
 nehemiah tobit judith esther i_maccabees ii_maccabees job psalms proverbs 
@@ -45,11 +51,6 @@ declare -A chapters=( [genesis]=50 [exodus]=40 [leviticus]=27 [numbers]=36 [deut
 [jude]=1 [revelation]=22
 )
 
-## Everything depends on picking a start date
-start=$(date -d $start_date +"%Y%m%d")
-end=$( date -d $end_date +"%Y%m%d")
-
-
 ####  FUNCTIONS
 
 ## Everything happens within the dates for loop
@@ -60,7 +61,6 @@ generate_dates(){
     
         # stop if we've reached the last book
         [[ -n ${chapters[$current_book]} ]] || exit_app
-    
 
         echo >>$external_file
 
@@ -69,6 +69,7 @@ generate_dates(){
         ## n is number of chapters to read each day
         eval chaps_per_day=$chaps_per_day
 
+        # create each day's worth of readings
         for ((n=1; n<=$chaps_per_day; n++)); do
 
             # This should update from global variable after each global update
@@ -82,7 +83,6 @@ generate_dates(){
         today=$(date -d"$today + 1 day" +"%Y%m%d"  )
 
     done 
-
 }
 
 ####  abstract out the printing of bible books and chapters
@@ -103,18 +103,16 @@ print_books_chaps(){
         # if advance_book runs out of books, it means we've finished the Bible
         if [ -z $new_book ] ; then exit_app; fi
 
-        ## not sure if I want to go recursive here.  Does this create a problem for future?
         export current_book="$new_book"   # update global variable
         export current_chapter=1        # update global variable
     fi
-
 }
 
 ####  when we run out of chapters in one book, advance to the next book of the bible
 advance_book(){
     book=$1
     new_book_index=$(( $(index_of "$book") + 1 ))
-    
+    # also return the book name to the calling function
     echo "${books[ $new_book_index ]}"
 }
 
@@ -123,7 +121,6 @@ advance_chapter(){
     next_chapter=$((current_chapter+1))
     export current_chapter=$next_chapter
 }
-
 
 ### Need to be able to get index value of book in books array
 index_of(){
@@ -137,13 +134,11 @@ index_of(){
 }
 
 
-
 ###  Figure out if we're at the last chapter in the book yet
 ###    This function behaves truthy of falsy depending on whether it's on last book
 not_last_book(){
 
     book=$1; chapter=$2
-
 
     if  [[ $chapter -le $(( ${chapters[$book]}-1 ))  ]] ; then 
         # increment chapter
