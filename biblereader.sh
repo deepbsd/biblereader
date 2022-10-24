@@ -142,7 +142,7 @@ not_last_book(){
 
     if  [[ $chapter -le $(( ${chapters[$book]}-1 ))  ]] ; then 
         # increment chapter
-        current_chapter=$((current_chapter+1))
+        advance_chapter
         return 0   # true if not last book
     
     else
