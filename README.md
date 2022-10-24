@@ -19,5 +19,8 @@ All input is lowercase or numeric.
 I should output the book names as they are indicated in the internal hash for easier spelling.  Some of
 the bible books have weird spelling that is easy to get wrong and thereby screw up the program.
 
-REMINDER: There's a problem with the start date:  it always winds up being June 2022.  Have to find and fix that
-problem.
+I've been thinking about creating that hash for the reading plan.  Each key is a date object.  The contents of the
+record is the reading assignment, which I guess will be a string with the chapters to be read.  Or should it be a
+referrence to the chapter?  Not sure.  Probably just a string will do.
+
+
